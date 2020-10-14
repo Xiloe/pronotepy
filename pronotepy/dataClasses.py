@@ -240,6 +240,8 @@ class Grade:
         the lowest grade of the test
     coefficient : str
         the coefficient of the grade
+    comment : str
+        the comment on the grade description
     """
 
     id: str
@@ -253,6 +255,7 @@ class Grade:
     max: str
     min: str
     coefficient: str
+    comment: str
 
     attribute_guide = {
         "N": ("id", str),
@@ -265,7 +268,7 @@ class Grade:
         "moyenne,V": ("average", Util.grade_parse),
         "noteMax,V": ("max", Util.grade_parse),
         "noteMin,V": ("min", Util.grade_parse),
-        "coefficient": ("coefficient", int),
+        "coefficient": ("coefficient", str),
         "commentaire": ("comment", str)
     }
 
@@ -382,7 +385,7 @@ class Lesson:
         response = self._client.communication.post('PageCahierDeTexte', data)
         contents = {}
         for lesson in response['donneesSec']['donnees']['ListeCahierDeTextes']['V']:
-            if lesson['cours']['V']['N'] == self.id:
+            if lesson['cours']['V']['N'] == self.id and lesson['listeContenus']['V']:
                 contents = lesson['listeContenus']['V'][0]
                 break
         if not contents:
